@@ -76,6 +76,10 @@ body {
     padding: auto;
 }
 
+#reset:hover {
+    border: 2px solid rgb(151, 18, 18);
+}
+
 .square {
     width: 12.5%;
     aspect-ratio: 1/1;
