@@ -56,8 +56,8 @@ body {
 
 #grid {
     display: flex;
-    /* flex-direction: row-reverse; */
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
+    /* flex-direction: row; */
     padding: 20px;
 }
 
@@ -88,6 +88,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-position: center;
+    background-size: cover;
 }
 
 .square:hover {
@@ -98,3 +100,25 @@ body {
     width: 80%;
     aspect-ratio: 1/1;
 }
+
+.red {
+    background-image: url(../assets/images/red.png);
+}
+
+.black{
+    background-image: url(../assets/images/black.png);
+}
+
+
+.blackKing {
+    background-image: url(../assets/images/blackKing.png);
+}
+
+.redKing {
+    background-image: url(../assets/images/redKing.png);
+}
+
+
+.selected {
+    border: 3px solid blue; /* Highlight the selected square */
+  }
