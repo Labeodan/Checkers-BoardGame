@@ -13,6 +13,7 @@ let tie = false;
 let selectedPiece = null;
 let validMoves = [];
 let continuingCapture = false; // Track if the current turn can continue due to capture
+const initialBoardState = structuredClone(board);
 
 /*......................................Functions............................................ */
 
@@ -110,13 +111,18 @@ const getValidMoves = (squareId) => {
 const getCaptureMoves = (squareId, direction) => {
   const moves = [];
   const captureOffsets = [14, 18]; // 2 steps left and right for capture
-  
-  captureOffsets.forEach(offset => {
+
+  captureOffsets.forEach((offset) => {
     const targetId = squareId + direction * offset;
     const opponentId = squareId + direction * (offset / 2);
 
-    if (board[targetId] && board[opponentId] && board[opponentId].piece && 
-        board[opponentId].piece.team !== turn && !board[targetId].piece) {
+    if (
+      board[targetId] &&
+      board[opponentId] &&
+      board[opponentId].piece &&
+      board[opponentId].piece.team !== turn &&
+      !board[targetId].piece
+    ) {
       moves.push(targetId);
     }
   });
@@ -128,11 +134,11 @@ const getCaptureMoves = (squareId, direction) => {
 const movePiece = (fromId, toId) => {
   const targetSquare = board[toId];
   const capturedPieceId = getCapturedPieceId(fromId, toId);
-  
+
   if (capturedPieceId !== null) {
     board[capturedPieceId].piece = null; // Remove captured piece
   }
-  
+
   targetSquare.piece = board[fromId].piece;
   board[fromId].piece = null;
   render();
@@ -142,8 +148,10 @@ const movePiece = (fromId, toId) => {
 const getCapturedPieceId = (fromId, toId) => {
   const direction = turn === "Black" ? 1 : -1;
   const midId = fromId + (toId - fromId) / 2;
-  
-  return board[midId] && board[midId].piece && board[midId].piece.team !== turn ? midId : null;
+
+  return board[midId] && board[midId].piece && board[midId].piece.team !== turn
+    ? midId
+    : null;
 };
 
 // Switch turns
@@ -166,7 +174,7 @@ const toggleSelect = (id) => {
 const handleClick = (e) => {
   const squareId = parseInt(e.target.id, 10);
   const clickedSquare = board[squareId];
-  
+
   // If selecting a piece
   if (!selectedPiece) {
     if (validatePieceSelection(clickedSquare)) {
@@ -174,12 +182,12 @@ const handleClick = (e) => {
       highlightValidMoves(squareId);
       toggleSelect(squareId);
     }
-  } 
+  }
   // If moving a piece
   else if (validMoves.includes(squareId)) {
     movePiece(selectedPiece.id, squareId);
     clearHighlights();
-    
+
     if (canContinueCapture(squareId)) {
       // Continue turn if a subsequent capture is possible
       continuingCapture = true;
@@ -188,11 +196,11 @@ const handleClick = (e) => {
       continuingCapture = false;
       switchTurn();
     }
-    
+
     selectedPiece = null;
     checkWin();
     checkTie();
-  } 
+  }
   // If deselecting a piece
   else if (squareId === selectedPiece.id) {
     toggleSelect(squareId);
@@ -208,8 +216,12 @@ const canContinueCapture = (squareId) => {
 
 // Function to check win conditions
 const checkWin = () => {
-  const blackPieces = board.filter(square => square.piece && square.piece.team === "Black");
-  const redPieces = board.filter(square => square.piece && square.piece.team === "Red");
+  const blackPieces = board.filter(
+    (square) => square.piece && square.piece.team === "Black"
+  );
+  const redPieces = board.filter(
+    (square) => square.piece && square.piece.team === "Red"
+  );
 
   // Check if one player has no pieces left
   if (blackPieces.length === 0) {
@@ -233,8 +245,11 @@ const checkWin = () => {
 
 // Function to check if the given team has valid moves
 const hasValidMoves = (team) => {
-  return board.some(square => 
-    square.piece && square.piece.team === team && getValidMoves(square.id).length > 0
+  return board.some(
+    (square) =>
+      square.piece &&
+      square.piece.team === team &&
+      getValidMoves(square.id).length > 0
   );
 };
 
@@ -255,12 +270,19 @@ const render = () => {
 };
 
 // Initialize the game
+// Function to reset or initialize the game
 const initialize = () => {
+  // Reset game state
   turn = "Black";
   winner = false;
   tie = false;
   selectedPiece = null;
   continuingCapture = false;
+
+  // Rebuild the board state from the initial clone
+  board.length = 0; // Clear the current board
+  initialBoardState.forEach((square) => board.push(structuredClone(square)));
+
   render();
 };
 
@@ -269,7 +291,9 @@ const reset = () => {
   initialize();
 };
 
-// Event Listeners
+/*......................................Event Listeners....................................... */
+
+// Reset button
 resetButton.addEventListener("click", reset);
 
 // Initialize the game
