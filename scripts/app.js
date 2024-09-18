@@ -12,6 +12,7 @@ let winner = false;
 let tie = false;
 let selectedPiece = null;
 let validMoves = [];
+let continuingCapture = false; // Track if the current turn can continue due to capture
 
 /*......................................Functions............................................ */
 
@@ -52,12 +53,12 @@ const updateBoard = () => {
 
 // Function to update the message
 const updateMessage = () => {
-  if (!winner && !tie) {
-    message.textContent = `${turn}'s turn`;
-  } else if (!winner && tie) {
+  if (winner) {
+    message.textContent = `Congratulations, ${winner} won!`;
+  } else if (tie) {
     message.textContent = "It's a tie";
   } else {
-    message.textContent = `Congratulations, ${turn} won!`;
+    message.textContent = `${turn}'s turn`;
   }
 };
 
@@ -177,15 +178,72 @@ const handleClick = (e) => {
   // If moving a piece
   else if (validMoves.includes(squareId)) {
     movePiece(selectedPiece.id, squareId);
-    switchTurn();
     clearHighlights();
+    
+    if (canContinueCapture(squareId)) {
+      // Continue turn if a subsequent capture is possible
+      continuingCapture = true;
+    } else {
+      // Switch turn if no further capture is possible
+      continuingCapture = false;
+      switchTurn();
+    }
+    
     selectedPiece = null;
+    checkWin();
+    checkTie();
   } 
   // If deselecting a piece
   else if (squareId === selectedPiece.id) {
     toggleSelect(squareId);
     clearHighlights();
     selectedPiece = null;
+  }
+};
+
+// Function to check if a subsequent capture is possible
+const canContinueCapture = (squareId) => {
+  return getCaptureMoves(squareId, turn === "Black" ? 1 : -1).length > 0;
+};
+
+// Function to check win conditions
+const checkWin = () => {
+  const blackPieces = board.filter(square => square.piece && square.piece.team === "Black");
+  const redPieces = board.filter(square => square.piece && square.piece.team === "Red");
+
+  // Check if one player has no pieces left
+  if (blackPieces.length === 0) {
+    winner = "Red";
+  } else if (redPieces.length === 0) {
+    winner = "Black";
+  } else {
+    // Check if the opponent has no valid moves
+    if (!hasValidMoves("Black") && turn === "Black") {
+      winner = "Red";
+    } else if (!hasValidMoves("Red") && turn === "Red") {
+      winner = "Black";
+    }
+  }
+
+  if (winner) {
+    updateMessage();
+    // Optionally, disable further clicks or add a game over screen
+  }
+};
+
+// Function to check if the given team has valid moves
+const hasValidMoves = (team) => {
+  return board.some(square => 
+    square.piece && square.piece.team === team && getValidMoves(square.id).length > 0
+  );
+};
+
+// Function to check tie conditions
+const checkTie = () => {
+  if (!hasValidMoves("Black") && !hasValidMoves("Red")) {
+    tie = true;
+    updateMessage();
+    // Optionally, disable further clicks or add a game over screen
   }
 };
 
@@ -202,6 +260,7 @@ const initialize = () => {
   winner = false;
   tie = false;
   selectedPiece = null;
+  continuingCapture = false;
   render();
 };
 
@@ -210,9 +269,7 @@ const reset = () => {
   initialize();
 };
 
-/*......................................Event Listeners....................................... */
-
-// Reset button
+// Event Listeners
 resetButton.addEventListener("click", reset);
 
 // Initialize the game
