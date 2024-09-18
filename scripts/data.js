@@ -1,99 +1,75 @@
 const board = [
-    // Row 0 (First row, top of the board)
-    [
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 1, type: 'black', team: 'black', startingPosition: '0,1', presentPosition: '0,1', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 2, type: 'black', team: 'black', startingPosition: '0,3', presentPosition: '0,3', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 3, type: 'black', team: 'black', startingPosition: '0,5', presentPosition: '0,5', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 4, type: 'black', team: 'black', startingPosition: '0,7', presentPosition: '0,7', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-    ],
-  
-    // Row 1
-    [
-      { color: 'dark', piece: { id: 5, type: 'black', team: 'black', startingPosition: '1,0', presentPosition: '1,0', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 6, type: 'black', team: 'black', startingPosition: '1,2', presentPosition: '1,2', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 7, type: 'black', team: 'black', startingPosition: '1,4', presentPosition: '1,4', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 8, type: 'black', team: 'black', startingPosition: '1,6', presentPosition: '1,6', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-    ],
-  
-    // Row 2
-    [
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 9, type: 'black', team: 'black', startingPosition: '2,1', presentPosition: '2,1', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 10, type: 'black', team: 'black', startingPosition: '2,3', presentPosition: '2,3', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 11, type: 'black', team: 'black', startingPosition: '2,5', presentPosition: '2,5', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 12, type: 'black', team: 'black', startingPosition: '2,7', presentPosition: '2,7', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-    ],
-  
-    // Row 3 (empty row)
-    [
-      { color: 'dark' }, 
-      { color: 'light' }, 
-      { color: 'dark' }, 
-      { color: 'light' }, 
-      { color: 'dark' }, 
-      { color: 'light' }, 
-      { color: 'dark' }, 
-      { color: 'light' },
-    ],
-  
-    // Row 4 (empty row)
-    [
-      { color: 'light' }, 
-      { color: 'dark' }, 
-      { color: 'light' }, 
-      { color: 'dark' }, 
-      { color: 'light' }, 
-      { color: 'dark' }, 
-      { color: 'light' }, 
-      { color: 'dark' }, 
-    ],
-  
-    // Row 5
-    [
-      { color: 'dark', piece: { id: 13, type: 'red', team: 'red', startingPosition: '5,0', presentPosition: '5,0', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 14, type: 'red', team: 'red', startingPosition: '5,2', presentPosition: '5,2', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 15, type: 'red', team: 'red', startingPosition: '5,4', presentPosition: '5,4', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 16, type: 'red', team: 'red', startingPosition: '5,6', presentPosition: '5,6', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-    ],
-  
-    // Row 6
-    [
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 17, type: 'red', team: 'red', startingPosition: '6,1', presentPosition: '6,1', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 18, type: 'red', team: 'red', startingPosition: '6,3', presentPosition: '6,3', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 19, type: 'red', team: 'red', startingPosition: '6,5', presentPosition: '6,5', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 20, type: 'red', team: 'red', startingPosition: '6,7', presentPosition: '6,7', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-    ],
-  
-    // Row 7
-    [
-      { color: 'dark', piece: { id: 21, type: 'red', team: 'red', startingPosition: '7,0', presentPosition: '7,0', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 22, type: 'red', team: 'red', startingPosition: '7,2', presentPosition: '7,2', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 23, type: 'red', team: 'red', startingPosition: '7,4', presentPosition: '7,4', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-      { color: 'dark', piece: { id: 24, type: 'red', team: 'red', startingPosition: '7,6', presentPosition: '7,6', isCaptured: false, isSelected: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
-      { color: 'light' }, 
-    ]
-  ];
-  
-  export default board
+  { id: 0, color: 'light' },
+  { id: 1, color: 'dark', piece: { id: 1, team: 'Black', presentPosition: 1, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 2, color: 'light' },
+  { id: 3, color: 'dark', piece: { id: 2, team: 'Black', presentPosition: 3, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 4, color: 'light' },
+  { id: 5, color: 'dark', piece: { id: 3, team: 'Black', presentPosition: 5, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 6, color: 'light' },
+  { id: 7, color: 'dark', piece: { id: 4, team: 'Black', presentPosition: 7, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+
+  { id: 8, color: 'dark', piece: { id: 5, team: 'Black', presentPosition: 8, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 9, color: 'light' },
+  { id: 10, color: 'dark', piece: { id: 6, team: 'Black', presentPosition: 10, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 11, color: 'light' },
+  { id: 12, color: 'dark', piece: { id: 7, team: 'Black', presentPosition: 12, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 13, color: 'light' },
+  { id: 14, color: 'dark', piece: { id: 8, team: 'Black', presentPosition: 14, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 15, color: 'light' },
+
+  { id: 16, color: 'light' },
+  { id: 17, color: 'dark', piece: { id: 9, team: 'Black', presentPosition: 17, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 18, color: 'light' },
+  { id: 19, color: 'dark', piece: { id: 10, team: 'Black', presentPosition: 19, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 20, color: 'light' },
+  { id: 21, color: 'dark', piece: { id: 11, team: 'Black', presentPosition: 21, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 22, color: 'light' },
+  { id: 23, color: 'dark', piece: { id: 12, team: 'Black', presentPosition: 23, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+
+  { id: 24, color: 'dark' },
+  { id: 25, color: 'light' },
+  { id: 26, color: 'dark' },
+  { id: 27, color: 'light' },
+  { id: 28, color: 'dark' },
+  { id: 29, color: 'light' },
+  { id: 30, color: 'dark' },
+  { id: 31, color: 'light' },
+
+  { id: 32, color: 'light' },
+  { id: 33, color: 'dark' },
+  { id: 34, color: 'light' },
+  { id: 35, color: 'dark' },
+  { id: 36, color: 'light' },
+  { id: 37, color: 'dark' },
+  { id: 38, color: 'light' },
+  { id: 39, color: 'dark' },
+
+  { id: 40, color: 'dark', piece: { id: 13, team: 'Red', presentPosition: 40, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 41, color: 'light' },
+  { id: 42, color: 'dark', piece: { id: 14, team: 'Red', presentPosition: 42, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 43, color: 'light' },
+  { id: 44, color: 'dark', piece: { id: 15, team: 'Red', presentPosition: 44, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 45, color: 'light' },
+  { id: 46, color: 'dark', piece: { id: 16, team: 'Red', presentPosition: 46, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 47, color: 'light' },
+
+  { id: 48, color: 'light' },
+  { id: 49, color: 'dark', piece: { id: 17, team: 'Red', presentPosition: 49, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 50, color: 'light' },
+  { id: 51, color: 'dark', piece: { id: 18, team: 'Red', presentPosition: 51, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 52, color: 'light' },
+  { id: 53, color: 'dark', piece: { id: 19, team: 'Red', presentPosition: 53, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 54, color: 'light' },
+  { id: 55, color: 'dark', piece: { id: 20, team: 'Red', presentPosition: 55, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+
+  { id: 56, color: 'dark', piece: { id: 21, team: 'Red', presentPosition: 56, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 57, color: 'light' },
+  { id: 58, color: 'dark', piece: { id: 22, team: 'Red', presentPosition: 58, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 59, color: 'light' },
+  { id: 60, color: 'dark', piece: { id: 23, team: 'Red', presentPosition: 60, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 61, color: 'light' },
+  { id: 62, color: 'dark', piece: { id: 24, team: 'Red', presentPosition: 62, isCaptured: false, isKing: false, availableMoves: [], canCapture: false, moveHistory: [], isMoving: false, hasDoubleJump: false, isHighlighted: false }},
+  { id: 63, color: 'light' }
+];
+
+export default board;
