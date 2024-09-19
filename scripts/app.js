@@ -97,65 +97,70 @@ const clearHighlights = () => {
 
 // Get valid moves for the selected piece
 const getValidMoves = (squareId) => {
-  const currentSquare = board[squareId];
-  const currentPiece = currentSquare.piece;
-  const moves = [];
-
-  // Determine the possible move directions based on if the piece is a king or a regular piece
-  const directions = currentPiece.team === "Black" ? [1] : [-1]; // Regular pieces move forward
-
-  directions.forEach((dir) => {
-    const leftMove = squareId + dir * 7;
-    const rightMove = squareId + dir * 9;
-
-    // Check for valid left diagonal move
-    if (
-      board[leftMove] && 
-      !board[leftMove].piece &&
-      Math.abs(Math.floor(leftMove / 8) - Math.floor(squareId / 8)) === 1
-    ) {
-      moves.push(leftMove);
-    }
-
-    // Check for valid right diagonal move
-    if (
-      board[rightMove] &&
-      !board[rightMove].piece &&
-      Math.abs(Math.floor(rightMove / 8) - Math.floor(squareId / 8)) === 1
-    ) {
-      moves.push(rightMove);
-    }
-
-    // Check for captures
-    const captureMoves = getCaptureMoves(squareId, dir);
-    moves.push(...captureMoves);
-  });
-
-  return moves;
-};
+    const currentSquare = board[squareId];
+    const currentPiece = currentSquare.piece;
+    const moves = [];
+    
+    if (!currentPiece) return moves;
+  
+    // Determine directions based on whether the piece is a king
+    const directions = currentPiece.isKing
+      ? [1, -1] // Kings can move in both directions
+      : [currentPiece.team === "Black" ? 1 : -1]; // Regular pieces move forward
+  
+    directions.forEach((dir) => {
+      const leftMove = squareId + dir * 7;
+      const rightMove = squareId + dir * 9;
+  
+      // Check for valid left diagonal move
+      if (
+        board[leftMove] &&
+        !board[leftMove].piece &&
+        Math.abs(Math.floor(leftMove / 8) - Math.floor(squareId / 8)) === 1
+      ) {
+        moves.push(leftMove);
+      }
+  
+      // Check for valid right diagonal move
+      if (
+        board[rightMove] &&
+        !board[rightMove].piece &&
+        Math.abs(Math.floor(rightMove / 8) - Math.floor(squareId / 8)) === 1
+      ) {
+        moves.push(rightMove);
+      }
+  
+      // Check for captures
+      const captureMoves = getCaptureMoves(squareId, dir);
+      moves.push(...captureMoves);
+    });
+  
+    return moves;
+  };
+  
 
 // Get capture moves
 const getCaptureMoves = (squareId, direction) => {
-  const moves = [];
-  const captureOffsets = [14, 18]; // 2 steps left and right for capture
-
-  captureOffsets.forEach((offset) => {
-    const targetId = squareId + direction * offset;
-    const opponentId = squareId + direction * (offset / 2);
-
-    if (
-      board[targetId] &&
-      board[opponentId] &&
-      board[opponentId].piece &&
-      board[opponentId].piece.team !== turn &&
-      !board[targetId].piece
-    ) {
-      moves.push(targetId);
-    }
-  });
-
-  return moves;
-};
+    const moves = [];
+    const captureOffsets = [14, 18]; // 2 steps left and right for capture
+  
+    captureOffsets.forEach((offset) => {
+      const targetId = squareId + direction * offset;
+      const opponentId = squareId + direction * (offset / 2);
+      if (
+        board[targetId] &&
+        board[opponentId] &&
+        board[opponentId].piece &&
+        board[opponentId].piece.team !== turn &&
+        !board[targetId].piece
+      ) {
+        moves.push(targetId);
+      }
+    });
+  
+    return moves;
+  };
+  
 
 // Move the selected piece to the new square
 const movePiece = (fromId, toId) => {
