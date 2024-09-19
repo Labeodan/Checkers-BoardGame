@@ -6,6 +6,10 @@ const squares = []; // This will contain all the divs representing squares
 const message = document.querySelector("#message");
 const resetButton = document.querySelector("#reset");
 
+/*......................................Audio Elements...................................... */
+const backgroundMusic = new Audio("../assets/audio/bg-music.mp3"); // Background music file
+const moveSound = new Audio("../assets/audio/click.mp3"); // Click sound file
+
 /*......................................Variables............................................ */
 let turn = "Black";
 let winner = false;
@@ -178,6 +182,7 @@ const isValidMove = (targetId, squareId) => {
 
 
 // Move the selected piece to the new square
+// Move the selected piece to the new square
 const movePiece = (fromId, toId) => {
     const targetSquare = board[toId];
     const fromSquare = board[fromId];
@@ -186,11 +191,15 @@ const movePiece = (fromId, toId) => {
     const capturedPieceId = getCapturedPieceId(fromId, toId);
     if (capturedPieceId !== null) {
       board[capturedPieceId].piece = null; // Remove captured piece
+      hasCaptured = true; // Mark capture as true
     }
     
     // Move the piece to the new position
     targetSquare.piece = fromSquare.piece;
     fromSquare.piece = null;
+
+    // Play move sound
+    moveSound.play();
   
     // Check if the piece should be promoted to a king
     const piece = targetSquare.piece;
@@ -206,7 +215,8 @@ const movePiece = (fromId, toId) => {
   
     // Re-render the board
     render();
-  };
+};
+
   
   
 
@@ -238,47 +248,54 @@ const toggleSelect = (id) => {
 
 // Handle the click event
 const handleClick = (e) => {
-  const squareId = parseInt(e.target.id, 10);
-  const clickedSquare = board[squareId];
-
-  // If selecting a piece
-  if (!selectedPiece) {
-    if (validatePieceSelection(clickedSquare)) {
-      selectedPiece = clickedSquare;
-      highlightValidMoves(squareId);
+    const squareId = parseInt(e.target.id, 10);
+    const clickedSquare = board[squareId];
+  
+    // If selecting a piece
+    if (!selectedPiece) {
+      if (validatePieceSelection(clickedSquare)) {
+        selectedPiece = clickedSquare;
+        highlightValidMoves(squareId);
+        toggleSelect(squareId);
+      }
+    }
+    // If moving a piece
+    else if (validMoves.includes(squareId)) {
+      movePiece(selectedPiece.id, squareId);
+      clearHighlights();
+  
+      if (hasCaptured && canContinueCapture(squareId)) {
+        // Continue turn if a subsequent capture is possible
+        continuingCapture = true;
+        selectedPiece = board[squareId]; // Re-select the piece in its new position
+        highlightValidMoves(squareId); // Highlight new valid moves (for capture)
+      } else {
+        // Switch turn if no further capture is possible
+        continuingCapture = false;
+        switchTurn();
+        selectedPiece = null;
+      }
+  
+      checkWin();
+      checkTie();
+    }
+    // If deselecting a piece
+    else if (squareId === selectedPiece.id) {
       toggleSelect(squareId);
+      clearHighlights();
+      selectedPiece = null;
     }
-  }
-  // If moving a piece
-  else if (validMoves.includes(squareId)) {
-    movePiece(selectedPiece.id, squareId);
-    clearHighlights();
-
-    if (hasCaptured && canContinueCapture(squareId)) {
-      // Continue turn if a subsequent capture is possible and the player has captured
-      continuingCapture = true;
-    } else {
-      // Switch turn if no further capture is possible
-      continuingCapture = false;
-      switchTurn();
-    }
-
-    selectedPiece = null;
-    checkWin();
-    checkTie();
-  }
-  // If deselecting a piece
-  else if (squareId === selectedPiece.id) {
-    toggleSelect(squareId);
-    clearHighlights();
-    selectedPiece = null;
-  }
-};
+  };
+  
 
 // Function to check if a subsequent capture is possible
+// Function to check if a subsequent capture is possible
 const canContinueCapture = (squareId) => {
-  return getCaptureMoves(squareId, turn === "Black" ? 1 : -1).length > 0;
-};
+    const currentPiece = board[squareId].piece;
+    if (!currentPiece) return false;
+    return getCaptureMoves(squareId, currentPiece.team === "Black" ? 1 : -1).length > 0;
+  };
+  
 
 // Function to check win conditions
 const checkWin = () => {
@@ -355,6 +372,14 @@ const render = () => {
 /*......................................Event Listeners...................................... */
 
 resetButton.addEventListener("click", resetGame);
+
+// Add event listener for background music when the page loads
+window.addEventListener("load", () => {
+    backgroundMusic.loop = true; // Loop the background music
+    backgroundMusic.volume = 0.5; // Adjust the volume (0.0 to 1.0)
+    backgroundMusic.play(); // Play the music
+  });
+  
 
 /*......................................Initial Render...................................... */
 
