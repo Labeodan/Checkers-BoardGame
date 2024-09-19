@@ -26,32 +26,42 @@ const clearBoard = () => {
 
 // Function to update the board
 const updateBoard = () => {
-  board.forEach((element) => {
-    const squareId = element.id; // Getting an id for each square
-    const square = document.createElement("div");
-
-    square.id = squareId;
-    square.classList.add("square");
-
-    if (element.color === "light") {
-      square.style.backgroundColor = "#F8F1E4"; // Light color
-    } else {
-      square.style.backgroundColor = "#7E3A0E"; // Dark color
-    }
-
-    // Adding pieces
-    if (element.piece && element.piece.team === "Red") {
-      square.classList.add("red");
-    } else if (element.piece && element.piece.team === "Black") {
-      square.classList.add("black");
-    }
-
-    square.addEventListener("click", handleClick);
-
-    squares.push(square); // Add elements to "squares" array
-    grid.appendChild(square); // Add elements to page
-  });
-};
+    board.forEach((element) => {
+      const squareId = element.id; // Getting an id for each square
+      const square = document.createElement("div");
+  
+      square.id = squareId;
+      square.classList.add("square");
+  
+      if (element.color === "light") {
+        square.style.backgroundColor = "#F8F1E4"; // Light color
+      } else {
+        square.style.backgroundColor = "#7E3A0E"; // Dark color
+      }
+  
+      // Adding pieces
+      if (element.piece) {
+        if (element.piece.team === "Red") {
+          square.classList.add("red");
+          if (element.piece.isKing) {
+            square.classList.add("redKing");
+          }
+        } else if (element.piece.team === "Black") {
+          square.classList.add("black");
+          if (element.piece.isKing) {
+            square.classList.add("blackKing");
+          }
+        }
+      }
+  
+      square.addEventListener("click", handleClick);
+  
+      squares.push(square); // Add elements to "squares" array
+      grid.appendChild(square); // Add elements to page
+    });
+  };
+  
+  
 
 // Function to update the message
 const updateMessage = () => {
@@ -149,22 +159,36 @@ const getCaptureMoves = (squareId, direction) => {
 
 // Move the selected piece to the new square
 const movePiece = (fromId, toId) => {
-  const targetSquare = board[toId];
-  const capturedPieceId = getCapturedPieceId(fromId, toId);
-
-  // Capture logic
-  if (capturedPieceId !== null) {
-    board[capturedPieceId].piece = null; // Remove captured piece
-    hasCaptured = true; // Mark that a capture has been made
-  } else {
-    hasCaptured = false; // No capture means no continuation of capture
-  }
-
-  targetSquare.piece = board[fromId].piece;
-  board[fromId].piece = null;
-
-  render();
-};
+    const targetSquare = board[toId];
+    const fromSquare = board[fromId];
+    
+    // Capture logic (if applicable)
+    const capturedPieceId = getCapturedPieceId(fromId, toId);
+    if (capturedPieceId !== null) {
+      board[capturedPieceId].piece = null; // Remove captured piece
+    }
+    
+    // Move the piece to the new position
+    targetSquare.piece = fromSquare.piece;
+    fromSquare.piece = null;
+  
+    // Check if the piece should be promoted to a king
+    const piece = targetSquare.piece;
+    if (piece) {
+      if (piece.team === "Black" && toId >= 56) {
+        piece.isKing = true;
+        console.log('Black piece promoted to king');
+      } else if (piece.team === "Red" && toId <= 7) {
+        piece.isKing = true;
+        console.log('Red piece promoted to king');
+      }
+    }
+  
+    // Re-render the board
+    render();
+  };
+  
+  
 
 // Get the id of the captured piece
 const getCapturedPieceId = (fromId, toId) => {
