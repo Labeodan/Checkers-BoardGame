@@ -107,60 +107,75 @@ const getValidMoves = (squareId) => {
     const directions = currentPiece.isKing
       ? [1, -1] // Kings can move in both directions
       : [currentPiece.team === "Black" ? 1 : -1]; // Regular pieces move forward
-  
+
     directions.forEach((dir) => {
       const leftMove = squareId + dir * 7;
       const rightMove = squareId + dir * 9;
-  
-      // Check for valid left diagonal move
-      if (
-        board[leftMove] &&
-        !board[leftMove].piece &&
-        Math.abs(Math.floor(leftMove / 8) - Math.floor(squareId / 8)) === 1
-      ) {
-        moves.push(leftMove);
+
+      // Check if move is within board boundaries and not wrapping around rows
+      if (isValidMove(leftMove, squareId)) {
+        if (
+          board[leftMove] &&
+          !board[leftMove].piece &&
+          Math.abs(Math.floor(leftMove / 8) - Math.floor(squareId / 8)) === 1
+        ) {
+          moves.push(leftMove);
+        }
       }
-  
-      // Check for valid right diagonal move
-      if (
-        board[rightMove] &&
-        !board[rightMove].piece &&
-        Math.abs(Math.floor(rightMove / 8) - Math.floor(squareId / 8)) === 1
-      ) {
-        moves.push(rightMove);
+
+      if (isValidMove(rightMove, squareId)) {
+        if (
+          board[rightMove] &&
+          !board[rightMove].piece &&
+          Math.abs(Math.floor(rightMove / 8) - Math.floor(squareId / 8)) === 1
+        ) {
+          moves.push(rightMove);
+        }
       }
   
       // Check for captures
-      const captureMoves = getCaptureMoves(squareId, dir);
+      const captureMoves = getCaptureMoves(squareId, dir, currentPiece.team);
       moves.push(...captureMoves);
     });
   
     return moves;
-  };
-  
+};
 
-// Get capture moves
-const getCaptureMoves = (squareId, direction) => {
+const getCaptureMoves = (squareId, direction, currentPieceTeam) => {
     const moves = [];
     const captureOffsets = [14, 18]; // 2 steps left and right for capture
   
     captureOffsets.forEach((offset) => {
       const targetId = squareId + direction * offset;
       const opponentId = squareId + direction * (offset / 2);
+  
+      // Ensure target and opponent IDs are within board boundaries
       if (
-        board[targetId] &&
-        board[opponentId] &&
-        board[opponentId].piece &&
-        board[opponentId].piece.team !== turn &&
-        !board[targetId].piece
+        targetId >= 0 && targetId < 64 &&
+        opponentId >= 0 && opponentId < 64 &&
+        Math.abs(Math.floor(targetId / 8) - Math.floor(squareId / 8)) === 2
       ) {
-        moves.push(targetId);
+        if (
+          board[targetId] &&
+          !board[targetId].piece &&
+          board[opponentId] &&
+          board[opponentId].piece &&
+          board[opponentId].piece.team !== currentPieceTeam
+        ) {
+          moves.push(targetId);
+        }
       }
     });
   
     return moves;
-  };
-  
+};
+
+// Helper function to check if move is within board boundaries
+const isValidMove = (targetId, squareId) => {
+  return targetId >= 0 && targetId < 64 &&
+         !((squareId % 8 === 0 && targetId % 8 === 7) || (squareId % 8 === 7 && targetId % 8 === 0));
+};
+
 
 // Move the selected piece to the new square
 const movePiece = (fromId, toId) => {
