@@ -13,6 +13,7 @@ let tie = false;
 let selectedPiece = null;
 let validMoves = [];
 let continuingCapture = false; // Track if the current turn can continue due to capture
+let hasCaptured = false; // Track if a capture was made in the current move
 const initialBoardState = structuredClone(board);
 
 /*......................................Functions............................................ */
@@ -86,23 +87,39 @@ const clearHighlights = () => {
 
 // Get valid moves for the selected piece
 const getValidMoves = (squareId) => {
-  const currentPiece = board[squareId].piece;
-  const direction = currentPiece.team === "Black" ? 1 : -1;
-  const leftMove = squareId + direction * 7;
-  const rightMove = squareId + direction * 9;
+  const currentSquare = board[squareId];
+  const currentPiece = currentSquare.piece;
   const moves = [];
 
-  // Check if leftMove and rightMove are within bounds and the destination is empty
-  if (board[leftMove] && !board[leftMove].piece) {
-    moves.push(leftMove);
-  }
-  if (board[rightMove] && !board[rightMove].piece) {
-    moves.push(rightMove);
-  }
+  // Determine the possible move directions based on if the piece is a king or a regular piece
+  const directions = currentPiece.team === "Black" ? [1] : [-1]; // Regular pieces move forward
 
-  // Check for captures
-  const captureMoves = getCaptureMoves(squareId, direction);
-  moves.push(...captureMoves);
+  directions.forEach((dir) => {
+    const leftMove = squareId + dir * 7;
+    const rightMove = squareId + dir * 9;
+
+    // Check for valid left diagonal move
+    if (
+      board[leftMove] && 
+      !board[leftMove].piece &&
+      Math.abs(Math.floor(leftMove / 8) - Math.floor(squareId / 8)) === 1
+    ) {
+      moves.push(leftMove);
+    }
+
+    // Check for valid right diagonal move
+    if (
+      board[rightMove] &&
+      !board[rightMove].piece &&
+      Math.abs(Math.floor(rightMove / 8) - Math.floor(squareId / 8)) === 1
+    ) {
+      moves.push(rightMove);
+    }
+
+    // Check for captures
+    const captureMoves = getCaptureMoves(squareId, dir);
+    moves.push(...captureMoves);
+  });
 
   return moves;
 };
@@ -135,12 +152,17 @@ const movePiece = (fromId, toId) => {
   const targetSquare = board[toId];
   const capturedPieceId = getCapturedPieceId(fromId, toId);
 
+  // Capture logic
   if (capturedPieceId !== null) {
     board[capturedPieceId].piece = null; // Remove captured piece
+    hasCaptured = true; // Mark that a capture has been made
+  } else {
+    hasCaptured = false; // No capture means no continuation of capture
   }
 
   targetSquare.piece = board[fromId].piece;
   board[fromId].piece = null;
+
   render();
 };
 
@@ -188,8 +210,8 @@ const handleClick = (e) => {
     movePiece(selectedPiece.id, squareId);
     clearHighlights();
 
-    if (canContinueCapture(squareId)) {
-      // Continue turn if a subsequent capture is possible
+    if (hasCaptured && canContinueCapture(squareId)) {
+      // Continue turn if a subsequent capture is possible and the player has captured
       continuingCapture = true;
     } else {
       // Switch turn if no further capture is possible
@@ -255,46 +277,42 @@ const hasValidMoves = (team) => {
 
 // Function to check tie conditions
 const checkTie = () => {
-  if (!hasValidMoves("Black") && !hasValidMoves("Red")) {
+  const remainingBlackPieces = board.filter(
+    (square) => square.piece && square.piece.team === "Black"
+  ).length;
+  const remainingRedPieces = board.filter(
+    (square) => square.piece && square.piece.team === "Red"
+  ).length;
+
+  // If both players are unable to capture and neither has won, declare a tie
+  if (remainingBlackPieces <= 1 && remainingRedPieces <= 1) {
     tie = true;
     updateMessage();
-    // Optionally, disable further clicks or add a game over screen
   }
 };
 
-// Function to render the board and message
-const render = () => {
-  clearBoard();
-  updateBoard();
+// Function to reset the game
+const resetGame = () => {
+  winner = false;
+  tie = false;
+  turn = "Black";
+  board.length = 0;
+  board.push(...structuredClone(initialBoardState));
+  render();
   updateMessage();
 };
 
-// Initialize the game
-// Function to reset or initialize the game
-const initialize = () => {
-  // Reset game state
-  turn = "Black";
-  winner = false;
-  tie = false;
-  selectedPiece = null;
-  continuingCapture = false;
-
-  // Rebuild the board state from the initial clone
-  board.length = 0; // Clear the current board
-  initialBoardState.forEach((square) => board.push(structuredClone(square)));
-
-  render();
+// Render the board
+const render = () => {
+  clearBoard();
+  updateBoard();
 };
 
-// Reset function
-const reset = () => {
-  initialize();
-};
+/*......................................Event Listeners...................................... */
 
-/*......................................Event Listeners....................................... */
+resetButton.addEventListener("click", resetGame);
 
-// Reset button
-resetButton.addEventListener("click", reset);
+/*......................................Initial Render...................................... */
 
-// Initialize the game
-initialize();
+render();
+updateMessage();

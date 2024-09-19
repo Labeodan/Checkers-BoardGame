@@ -92,9 +92,9 @@ body {
     background-size: cover;
 }
 
-.square:hover {
+/* .square:hover {
     border: 2px solid brown;
-}
+} */
 
 #square img {
     width: 80%;
@@ -120,5 +120,12 @@ body {
 
 
 .selected {
-    border: 3px solid blue; /* Highlight the selected square */
+    border: 3px solid yellow; /* Highlight the selected square */
   }
+
+
+.highlight {
+    outline: 3px solid yellow; /* Highlight border around valid move squares */
+    box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.5); /* Adds a glowing effect */
+  }
+  
