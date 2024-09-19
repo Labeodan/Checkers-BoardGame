@@ -337,14 +337,14 @@ const checkTie = () => {
 
 // Function to reset the game
 const resetGame = () => {
-  winner = false;
-  tie = false;
-  turn = "Black";
-  board.length = 0;
-  board.push(...structuredClone(initialBoardState));
-  render();
-  updateMessage();
-};
+    winner = false;
+    tie = false;
+    turn = "Black";
+    board.length = 0; // Clear the existing board array
+    board.push(...structuredClone(initialBoardState)); // Restore the initial state
+    render(); // Re-render the board
+    updateMessage(); // Update the message
+  };
 
 // Render the board
 const render = () => {
