@@ -7,8 +7,8 @@ const message = document.querySelector("#message");
 const resetButton = document.querySelector("#reset");
 
 /*......................................Audio Elements...................................... */
-const backgroundMusic = new Audio("../assets/audio/bg-music.mp3"); // Background music file
-const moveSound = new Audio("../assets/audio/click.mp3"); // Click sound file
+const backgroundMusic = new Audio("./assets/audio/bg-music.mp3"); // Background music file
+const moveSound = new Audio("./assets/audio/click.mp3"); // Click sound file
 
 /*......................................Variables............................................ */
 let turn = "Black";

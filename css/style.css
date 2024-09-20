@@ -19,6 +19,7 @@ body {
     }
 }
 
+
 #container {
     display: flex;
     flex-direction: column;
@@ -35,6 +36,8 @@ body {
     background-position: center;
     border-radius: 20px;
 }
+
+
 
 #messageDiv{
     width: 50%;
@@ -192,4 +195,109 @@ body {
 
 .modal-content ul {
     margin-bottom: 20px;
+}
+
+
+/* For screens less than 1023px */
+@media (max-width: 1024px) {
+    #board {
+        width: 90vw;
+        border-radius: 15px;
+    }
+
+    #messageDiv {
+        width: 70%;
+        font-size: 1.1rem;
+    }
+
+    #reset {
+        width: 50px;
+        font-size: 0.65rem;
+    }
+
+    /* .square {
+        width: 15%;
+    }
+
+    #square img {
+        width: 75%;
+    } */
+}
+
+/* For screens less than 768px (tablet sizes) */
+@media (max-width: 768px) {
+    #board {
+        width: 90vw;
+        border-radius: 15px;
+    }
+
+    #messageDiv {
+        width: 80%;
+        font-size: 1rem;
+    }
+
+    #reset {
+        width: 45px;
+        font-size: 0.6rem;
+    }
+
+    /* .square {
+        width: 17%;
+    } */
+
+    /* #square img {
+        width: 70%;
+    } */
+}
+
+/* For screens less than 673px */
+@media (max-width: 673px) {
+    #board {
+        width: 90vw;
+        border-radius: 10px;
+    }
+
+    #messageDiv {
+        width: 90%;
+        font-size: 0.9rem;
+    }
+
+    #reset {
+        width: 40px;
+        font-size: 0.55rem;
+    }
+
+    /* .square {
+        width: 20%;
+    } */
+
+    /* #square img {
+        width: 65%;
+    } */
+}
+
+/* For screens less than 480px (mobile sizes) */
+@media (max-width: 480px) {
+    #board {
+        width: 100vw;
+        border-radius: 10px;
+    }
+
+    #messageDiv {
+        width: 95%;
+        font-size: 0.8rem;
+    }
+
+    #reset {
+        width: 35px;
+        font-size: 0.5rem;
+    }
+
+    /* .square {
+        width: 22%;
+    } */
+
+    /* #square img {
+        width: 60%;
+    } */
 }
