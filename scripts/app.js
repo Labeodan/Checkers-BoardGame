@@ -199,16 +199,6 @@ const isValidMove = (targetId, squareId) => {
 };
 
 
-const flipBoard = () => {
-  if (grid.classList.contains("grid")) {
-    grid.classList.remove("grid");
-    grid.classList.add("grid-reverse");
-  } else if (grid.classList.contains("grid-reverse")) {
-    grid.classList.remove("grid-reverse");
-    grid.classList.add("grid");
-  }
- 
-}
 
 // Move the selected piece to the new square
 const movePiece = (fromId, toId) => {
@@ -273,7 +263,6 @@ const getCapturedPieceId = (fromId, toId) => {
 const switchTurn = () => {
   turn = turn === "Black" ? "Red" : "Black";
   updateMessage();
-  setTimeout(flipBoard, 1000)
 };
 
 // Toggle selection of squares
@@ -401,7 +390,6 @@ const resetGame = () => {
   board.push(...structuredClone(initialBoardState)); // Restore the initial state
   render(); // Re-render the board
   updateMessage(); // Update the message
-  flipBoard()
 };
 
 // Render the board
