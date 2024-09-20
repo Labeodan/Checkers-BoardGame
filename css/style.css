@@ -48,10 +48,18 @@ body {
     
 }
 
-#grid {
+
+
+.grid {
     display: flex;
     flex-wrap: wrap-reverse;
-    /* flex-direction: row; */
+    padding: 20px;
+}
+
+.grid-reverse {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
     padding: 20px;
 }
 
