@@ -215,13 +215,7 @@ body {
         font-size: 0.65rem;
     }
 
-    /* .square {
-        width: 15%;
-    }
 
-    #square img {
-        width: 75%;
-    } */
 }
 
 /* For screens less than 768px (tablet sizes) */
@@ -241,13 +235,6 @@ body {
         font-size: 0.6rem;
     }
 
-    /* .square {
-        width: 17%;
-    } */
-
-    /* #square img {
-        width: 70%;
-    } */
 }
 
 /* For screens less than 673px */
@@ -267,13 +254,6 @@ body {
         font-size: 0.55rem;
     }
 
-    /* .square {
-        width: 20%;
-    } */
-
-    /* #square img {
-        width: 65%;
-    } */
 }
 
 /* For screens less than 480px (mobile sizes) */
@@ -293,11 +273,4 @@ body {
         font-size: 0.5rem;
     }
 
-    /* .square {
-        width: 22%;
-    } */
-
-    /* #square img {
-        width: 60%;
-    } */
 }
