@@ -8,7 +8,7 @@
 
 ## Getting Started
 
-You can play the game online by visiting the following link: [**Play Checkers Master**](https://your-deployed-link.com) <!-- Replace with actual deployment link -->
+You can play the game online by visiting the following link: [**Play Checkers Master**](https://labeodan.github.io/Checkers-BoardGame/) <!-- Replace with actual deployment link -->
 
 ### Instructions:
 - Select a piece to move by clicking on it.
