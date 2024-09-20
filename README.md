@@ -4,9 +4,7 @@
 
 ## Description
 
-**Checkers Master** is a modern twist on the classic checkers game, designed for both casual players and seasoned strategists. The game follows the traditional rules of checkers with enhanced visuals and smooth gameplay mechanics. The objective is to capture all of your opponent's pieces by moving your pieces diagonally across the board. The game supports both normal pieces and kings, offering an immersive experience for fans of this timeless board game.
-
-I chose to develop this game because checkers is simple yet strategic, offering the perfect balance between challenge and entertainment. It also provided an excellent opportunity to implement logic for movement, capturing, promotion to kings, and win/tie conditions.
+**Checkers Master** is a web-based version of the classic checkers game, where players move pieces diagonally to capture opponents' pieces. The game includes standard pieces and kings, offering an intuitive, enjoyable experience.
 
 ## Getting Started
 
