@@ -99,7 +99,8 @@ const clearHighlights = () => {
   validMoves = [];
 };
 
-// Get valid moves for the selected piece
+
+// Get valid moves for a piece
 const getValidMoves = (squareId) => {
     const currentSquare = board[squareId];
     const currentPiece = currentSquare.piece;
@@ -112,6 +113,19 @@ const getValidMoves = (squareId) => {
       ? [1, -1] // Kings can move in both directions
       : [currentPiece.team === "Black" ? 1 : -1]; // Regular pieces move forward
 
+    // Check for forced captures
+    const captureMoves = [];
+    directions.forEach((dir) => {
+      const captures = getCaptureMoves(squareId, dir, currentPiece.team);
+      captureMoves.push(...captures);
+    });
+
+    // If a capture occurred earlier, only allow additional captures
+    if (hasCaptured && captureMoves.length > 0) {
+        return captureMoves; // Must make another capture
+    }
+    
+    // If no captures are available or no capture was made, allow regular moves
     directions.forEach((dir) => {
       const leftMove = squareId + dir * 7;
       const rightMove = squareId + dir * 9;
@@ -136,15 +150,15 @@ const getValidMoves = (squareId) => {
           moves.push(rightMove);
         }
       }
-  
-      // Check for captures
-      const captureMoves = getCaptureMoves(squareId, dir, currentPiece.team);
-      moves.push(...captureMoves);
     });
-  
+
+    // Include any available captures
+    moves.push(...captureMoves);
+
     return moves;
 };
 
+// Capture moves helper function (unchanged)
 const getCaptureMoves = (squareId, direction, currentPieceTeam) => {
     const moves = [];
     const captureOffsets = [14, 18]; // 2 steps left and right for capture
@@ -170,18 +184,15 @@ const getCaptureMoves = (squareId, direction, currentPieceTeam) => {
         }
       }
     });
-  
+    
     return moves;
-};
+  };
+  // Helper function to check if move is within board boundaries
+  const isValidMove = (targetId, squareId) => {
+    return targetId >= 0 && targetId < 64 &&
+           !((squareId % 8 === 0 && targetId % 8 === 7) || (squareId % 8 === 7 && targetId % 8 === 0));
+  };
 
-// Helper function to check if move is within board boundaries
-const isValidMove = (targetId, squareId) => {
-  return targetId >= 0 && targetId < 64 &&
-         !((squareId % 8 === 0 && targetId % 8 === 7) || (squareId % 8 === 7 && targetId % 8 === 0));
-};
-
-
-// Move the selected piece to the new square
 // Move the selected piece to the new square
 const movePiece = (fromId, toId) => {
     const targetSquare = board[toId];
@@ -212,13 +223,21 @@ const movePiece = (fromId, toId) => {
         console.log('Red piece promoted to king');
       }
     }
-  
+
+    // Check if the current piece has any additional capture moves
+    const additionalCaptureMoves = getValidMoves(toId).filter(move => getCaptureMoves(toId, piece.isKing ? [1, -1] : [piece.team === "Black" ? 1 : -1], piece.team).length > 0);
+
+    if (additionalCaptureMoves.length === 0) {
+      hasCaptured = false; // Reset capture flag if no further captures are possible
+    }
+
     // Re-render the board
     render();
 };
 
-  
-  
+
+
+
 
 // Get the id of the captured piece
 const getCapturedPieceId = (fromId, toId) => {
@@ -322,6 +341,7 @@ const checkWin = () => {
 
   if (winner) {
     updateMessage();
+    setTimeout(resetGame, 2000)
     // Optionally, disable further clicks or add a game over screen
   }
 };
@@ -375,11 +395,24 @@ resetButton.addEventListener("click", resetGame);
 
 // Add event listener for background music when the page loads
 window.addEventListener("load", () => {
-    backgroundMusic.loop = true; // Loop the background music
-    backgroundMusic.volume = 0.5; // Adjust the volume (0.0 to 1.0)
-    backgroundMusic.play(); // Play the music
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = 0.5; 
   });
   
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const startModal = document.getElementById("startModal");
+    const playGameButton = document.getElementById("playGame");
+
+    // Show the modal when the page loads
+    startModal.style.display = "flex";
+
+    // Hide the modal when the Play Game button is clicked
+    playGameButton.addEventListener("click", () => {
+        startModal.style.display = "none";
+        backgroundMusic.play(); // Play the music
+    });
+});
 
 /*......................................Initial Render...................................... */
 
