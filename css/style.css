@@ -182,3 +182,14 @@ body {
 #startModal {
     display: inline;
 }
+
+
+.modal-content li {
+    list-style: none;
+    font-size: 1.25rem;
+    padding: 10px;
+}
+
+.modal-content ul {
+    margin-bottom: 20px;
+}
